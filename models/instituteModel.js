@@ -1,7 +1,11 @@
 const mongoose = require("mongoose")
 
 const InstituteSchema = new mongoose.Schema({
-    text:{
+    InstituteName:{
+        type:String,
+        required:true
+    },
+    InstituteLocation:{
         type:String,
         required:true
     }
