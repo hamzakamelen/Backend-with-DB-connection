@@ -14,6 +14,7 @@ const mongoose = require("mongoose")
 const TeacherRouter = require("./Routes/teacherRouter")
 const StudentRouter = require("./Routes/studentRouter")
 const InstituteRouter = require("./Routes/instituteRouter")
+const CourseRoute = require("./Routes/CourseRoute")
 // Use Middle Ware
 const app = express()
 app.use(express.json());
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use('/api/studentRouter', StudentRouter)
 app.use('/api/instituteRouter', InstituteRouter)
 app.use('/api/teacherRouter', TeacherRouter)
+app.use('/api/CourseRouter', CourseRoute)
 
 mongoose.connect(process.env.MONGO_URI).then(()=>{
     app.listen(process.env.PORT, () => {

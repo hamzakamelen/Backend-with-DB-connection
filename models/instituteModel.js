@@ -8,9 +8,18 @@ const InstituteSchema = new mongoose.Schema({
     InstituteLocation:{
         type:String,
         required:true
+    },
+    ShortName:{
+        type:String,
+        required:true    
+    },
+    contact:{
+        type:String,
+        required:true
     }
+
 })
 
-const InstituteModel = mongoose.model("InstituteName",InstituteSchema)
+const InstituteModel = mongoose.model("Institute",InstituteSchema)
 
 module.exports = InstituteModel;

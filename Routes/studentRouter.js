@@ -17,8 +17,7 @@ route.get('/',async (req,res)=>{
         }
     }catch(err){
         console.log(err)
-        res.send(sendResponse(false,null,"Internal server Error").status(400))
-        .status(400);
+        res.send(sendResponse(false,null,"Internal server Error")).status(400);
     }
     // res.send("Get All Students Data")
 })
@@ -30,11 +29,17 @@ route.get('/:id',  (req, res) => {
 // ----------------------
 // POST DATA
 route.post('/', async (req, res) => {
-    let {firstName,LastName,contact,Course} = req.body
+    let {firstName,LastName,contact,Course, password , Email} = req.body
     try{
 
         let errArr = []
         if(!firstName){
+            errArr.push("Required : FirstName")
+        }
+        if(!Email){
+            errArr.push("Required : FirstName")
+        }
+        if(!password){
             errArr.push("Required : FirstName")
         }
         if(!contact){
@@ -45,13 +50,13 @@ route.post('/', async (req, res) => {
         if(errArr.length>0){
             res.send(false,null,"Required",errArr)
         }else{
-            let obj = {firstName,LastName,contact,Course};
+            let obj = {firstName,LastName,Email,password,contact,Course};
             let student = new StudentModel(obj)
             await student.save()
             if(!student){
                 res.send(sendResponse(false,null,"Internal Server Error")).status(400)
             }else{
-                res.send(sendResponse(true,student,"Saved Succesfully")).status(400)
+                res.send(sendResponse(true,student,"Saved Succesfully")).status(200)
             }
         }
     }  
