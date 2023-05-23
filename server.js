@@ -8,6 +8,7 @@
 
 //Imports
 require("dotenv").config()
+const cors = require("cors")
 const express = require("express")
 const mongoose = require("mongoose")
 // ROUTER IMPORTS
@@ -18,7 +19,7 @@ const CourseRoute = require("./Routes/CourseRoute")
 // Use Middle Ware
 const app = express()
 app.use(express.json());
-
+app.use(cors());
 
 app.use('/api/studentRouter', StudentRouter)
 app.use('/api/instituteRouter', InstituteRouter)
