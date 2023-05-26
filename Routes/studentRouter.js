@@ -125,7 +125,7 @@ route.delete('/:id', async (req, res) => {
         } else {
             let deleteResult = StudentModel.findByIdAndDelete(id)
             if (!deleteResult) {
-                res.send(sendResponse(false, null, "ERror")).status(400)
+                res.send(sendResponse(false, null, "Error")).status(400)
             } else {
                 res.send(sendResponse(true, null, "Deleted Successfully")).status(200)
             }
@@ -138,6 +138,7 @@ route.delete('/:id', async (req, res) => {
 })
 // ----------------------
 
+
 // SEARCH API
 route.get("/search", async (req, res) => {
     try{
@@ -147,7 +148,7 @@ route.get("/search", async (req, res) => {
             if (!rESULT) {
                 res.send(sendResponse(false, null, "No Name Found")).status(404)
             } else {
-                res.send(sendResponse(true, rESULT)).status(404)
+                res.send(sendResponse(true, rESULT)).status(200)
             }
         }else{
             res.send(sendResponse(false,null,"INternal Error")).status(400)
@@ -157,6 +158,9 @@ route.get("/search", async (req, res) => {
         res.send(sendResponse(false,null,"INternal Error",err)).status(404)
     }
 })
+
+
+
 //SEARCH MULTIPLE
 // route.get("/searchfull", async (req, res) => {
 //     let { firstName, LastName } = req.body

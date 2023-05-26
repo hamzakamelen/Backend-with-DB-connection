@@ -22,8 +22,20 @@ catch(err){
 })
 // ----------------------
 // GET DATA BY SPECIFIC ID
-route.get('/:id', (req, res) => {
-    res.send("Get Single Institute Data")
+route.get('/:id',async (req, res) => {
+   try{
+    let id = req.params.id;
+    let result = await InstituteModel.findById(id);
+    if(!result){
+        res.send(sendResponse(false,null,"Data Not Found")).status(404);
+    }else{
+        res.send(sendResponse(true,result,"Successfull")).status(200)
+    }
+   }
+catch(err){
+    res.send(sendResponse(false,null,"Internal Error",err)).status(400);
+}
+    // res.send("Get Single Institute Data")
 })
 // ----------------------
 // POST DATA
@@ -62,14 +74,46 @@ let ErrorArray = []
 })
 // ----------------------
 // PUT DATA
-route.put('/:id', (req, res) => {
-    res.send("Edit Institute Data")
+route.put('/:id',async (req, res) => {
+    try{
+        let id = req.params.id
+        let result = await InstituteModel.find(id)
+        if(!result){
+            res.send(sendResponse(false,null,"Not Found")).status(404)
+        }else{
+            let updateResult = await InstituteModel.findByIdAndUpdate(id,req.body,{new:true})
+            if(!updateResult){
+                res.send(sendResponse(false,null,"Error")).status(404)
+            }else{
+                res.send(sendResponse(true,updateResult,"Updated Successful")).status(200)
+            }
+        }
+    }catch(err){
+        res.send(sendResponse(false,null,"Internal Server Error",err)).status(400)
+    }
+    // res.send("Edit Institute Data")
 })
 // ----------------------
 
 // DELETE DATA
-route.delete('/:id', (req, res) => {
-    res.send("Delete Student Data")
+route.delete('/:id',async (req, res) => {
+    try{
+        let id = req.params.id
+        let result = await InstituteModel.findById(id)
+        if(!result){
+            res.send(sendResponse(false,null,"Data Not Found")).status(404)
+        }else{
+            let deleteResult = await InstituteModel.findByIdAndDelete(id)
+            if(!deleteResult){
+                res.send(sendResponse(false,null,"Error")).status(404)
+            }else{
+                res.send(sendResponse(true,null,"Deleted Successfully")).status(200)
+            }
+        }
+    }catch(err){
+        res.send(sendResponse(false,null,"Internal Server Error",err)).status(400)
+    }
+    // res.send("Delete Student Data")
 })
 // ----------------------
 

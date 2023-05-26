@@ -17,8 +17,18 @@ route.get('/', async (req, res) => {
     }
 })
 
-route.get('/:id',(req,res)=>{
-
+route.get('/:id',async(req,res)=>{
+    try{
+        let id = req.params.id;
+        let result = await CourseModel.findById(id)
+        if(!result){
+            res.send(sendResponse(false,null,"Data Not Found")).status(404)
+        }else{
+            res.send(sendResponse(true,result,"Successful")).status(200)
+        }
+    }catch(err){
+        res.send(sendResponse(false,null,"Internal Server Error",err)).status(400)
+    }
 })
 route.post('/', async (req, res) => {
     let {Name,Duration,Fees,ShortName} = req.body
@@ -52,7 +62,40 @@ route.post('/', async (req, res) => {
 
     }
 })
-route.put('/:id', (req, res) => { })
-route.delete('/:id', (req, res) => { })
+route.put('/:id',async (req, res) => {
+    try{
+        let id = req.params.id
+        let result = await CourseModel.findById(id)
+        if(!result){
+            res.send(sendResponse(false,null,"Data Not Found")).status(404)
+        }else{
+            let updateResult = await CourseModel.findByIdAndUpdate(id, req.body,{new:true})
+            if(!updateResult){
+                res.send(sendResponse(false,null,"Error")).status(400)
+            }else{
+            res.send(sendResponse(true,updateResult,"Update Successful")).status(200)
+        }}
+    }catch(err){
+        res.send(sendResponse(false,null,"internal Server Error",err))
+    }
+})
+route.delete('/:id',async (req, res) => {
+    try{
+        let id = req.params.id
+        let result = await CourseModel.findById(id)
+        if(!result){
+            res.send(sendResponse(false,null,"Data Not Found")).status(404)
+        }else{
+            let deleteResult = await CourseModel.findByIdAndDelete(id)
+            if(!deleteResult){
+                res.send(sendResponse(false,null,"Error")).status(404)
+            }else{
+                res.send(sendResponse(true,null,"Deleted Successfully")).status(200)
+            }
+        }
+    }catch(err){
+        res.send(sendResponse(false,null,"Internal Server Error",err)).status(400)
+    }
+})
 
 module.exports=route
