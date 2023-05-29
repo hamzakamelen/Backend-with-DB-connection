@@ -6,7 +6,8 @@ const StudentSchema = new mongoose.Schema({
         required:true
     },
     LastName:{
-        type: String
+        type: String,
+        required:true
     },
     contact:{
         type: String,
@@ -21,7 +22,7 @@ const StudentSchema = new mongoose.Schema({
         required:true    
     },
     Course:{
-        type: Number,
+        type: String,
         required:true
     }
 })

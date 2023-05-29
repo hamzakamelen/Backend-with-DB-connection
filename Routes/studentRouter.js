@@ -123,7 +123,7 @@ route.delete('/:id', async (req, res) => {
         if (!result) {
             res.send(sendResponse(false, null, "No Data on this id")).status(404)
         } else {
-            let deleteResult = StudentModel.findByIdAndDelete(id)
+            let deleteResult =await  StudentModel.findByIdAndDelete(id)
             if (!deleteResult) {
                 res.send(sendResponse(false, null, "Error")).status(400)
             } else {
