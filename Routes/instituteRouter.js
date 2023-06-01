@@ -6,20 +6,41 @@ const { sendResponse } = require("../helper/helper");
 const route = express.Router();
 
 // GET DATA
-route.get('/',async (req, res) => {
-    try{
-    const result = await InstituteModel.find()
-    if(!result){
-        res.send(sendResponse(false,null,"Data Not Found")).status(404)
-    }else{
-        res.send(sendResponse(true,result)).status(200)
+route.get("/", async (req, res) => {
+    try {
+      const { page, limit } = req.query;
+      const startIndex = (page - 1) * limit;
+  
+      const Institutes = await InstituteModel.find()
+        .skip(startIndex)
+        .limit(limit);
+  
+      const totalInstitutes = await InstituteModel.countDocuments();
+  
+      res.json({
+        data: Institutes,
+        page,
+        totalPages: Math.ceil(totalInstitutes / limit),
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
     }
-}
-catch(err){
-    res.send(sendResponse(false,null,"internal Server Error",err)).status(400)
-}  
-    // res.send("Get All Institute Data")
-})
+  });
+// route.get('/',async (req, res) => {
+//     try{
+//     const result = await InstituteModel.find()
+//     if(!result){
+//         res.send(sendResponse(false,null,"Data Not Found")).status(404)
+//     }else{
+//         res.send(sendResponse(true,result)).status(200)
+//     }
+// }
+// catch(err){
+//     res.send(sendResponse(false,null,"internal Server Error",err)).status(400)
+// }  
+//     // res.send("Get All Institute Data")
+// })
 // ----------------------
 // GET DATA BY SPECIFIC ID
 route.get('/:id',async (req, res) => {

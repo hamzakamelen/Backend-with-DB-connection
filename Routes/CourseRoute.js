@@ -4,18 +4,39 @@ const { sendResponse } = require("../helper/helper")
 const route =  express.Router()
 
 
-route.get('/', async (req, res) => {
-    try{
-        const result = await CourseModel.find()
-        if(!result){
-            res.send(sendResponse(false,null,"Data Not Found")).status(404)
-        }else{
-            res.send(sendResponse(true,result)).status(200)
-        }
-    }catch(err){
-        res.send(sendResponse(false,null,"Internal Server Error",err)).status(400)
+route.get("/", async (req, res) => {
+    try {
+      const { page, limit } = req.query;
+      const startIndex = (page - 1) * limit;
+  
+      const Courses = await CourseModel.find()
+        .skip(startIndex)
+        .limit(limit);
+  
+      const totalCourses = await CourseModel.countDocuments();
+  
+      res.json({
+        data: Courses,
+        page,
+        totalPages: Math.ceil(totalCourses / limit),
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
     }
-})
+  });
+// route.get('/', async (req, res) => {
+//     try{
+//         const result = await CourseModel.find()
+//         if(!result){
+//             res.send(sendResponse(false,null,"Data Not Found")).status(404)
+//         }else{
+//             res.send(sendResponse(true,result)).status(200)
+//         }
+//     }catch(err){
+//         res.send(sendResponse(false,null,"Internal Server Error",err)).status(400)
+//     }
+// })
 
 route.get('/:id',async(req,res)=>{
     try{

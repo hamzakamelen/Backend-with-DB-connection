@@ -5,19 +5,41 @@ const { sendResponse } = require("../helper/helper");
 const route = express.Router();
 
 // GET DATA
-route.get('/', async (req, res) => {
+route.get("/", async (req, res) => {
     try {
-        const result = await TeacherModel.find()
-        if (!result) {
-            res.send(sendResponse(false, null, "Data Not Found")).status(404)
-        } else {
-            res.send(sendResponse(true, result)).status(200)
-        }
-    } catch (err) {
-        res.send(sendResponse(false, null, "Internal Server Error", err)).status(400)
+      const { page, limit } = req.query;
+      const startIndex = (page - 1) * limit;
+  
+      const Teachers = await TeacherModel.find()
+        .skip(startIndex)
+        .limit(limit);
+  
+      const totalTeachers = await TeacherModel.countDocuments();
+  
+      res.json({
+        data: Teachers,
+        page,
+        totalPages: Math.ceil(totalTeachers / limit),
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server Error" });
     }
-    // res.send("Get Teachers Data")
-})
+  });
+  
+// route.get('/', async (req, res) => {
+//     try {
+//         const result = await TeacherModel.find()
+//         if (!result) {
+//             res.send(sendResponse(false, null, "Data Not Found")).status(404)
+//         } else {
+//             res.send(sendResponse(true, result)).status(200)
+//         }
+//     } catch (err) {
+//         res.send(sendResponse(false, null, "Internal Server Error", err)).status(400)
+//     }
+//     // res.send("Get Teachers Data")
+// })
 // ----------------------
 
 // GET DATA BY SPECIFIC ID
