@@ -13,4 +13,4 @@ const sendResponse= (status,data,message,error)=>{
  return ResponseOBj
 }
 
-module.exports = {sendResponse }
+module.exports = sendResponse
