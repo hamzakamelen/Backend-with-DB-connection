@@ -1,4 +1,5 @@
-const { sendResponse } = require("../helper/helper");
+
+const sendResponse = require("../helper/helper");
 const StudentModel = require("../models/studentModel");
 
 const StudentController = {

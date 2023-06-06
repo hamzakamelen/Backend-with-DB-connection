@@ -33,7 +33,7 @@ const AuthControllers = {
         let isConfirm = await bcrypt.compare(obj.password, result.password);
         if (isConfirm) {
           const token = jwt.sign({ ...result }, process.env.SECURE_KEY, {
-            expiresIn: "24h",
+            expiresIn: "14h",
           });
           res.send(
             sendResponse(true, { user: result, token }, "Login SuccessFul")
